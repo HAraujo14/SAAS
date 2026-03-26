@@ -1,0 +1,24 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.log
+
+## Uploads locais (nunca commitar ficheiros de utilizadores)
+uploads/
+
+## Segredos (nunca commitar)
+appsettings.Production.json
+**/secrets.json
+.env
+
+## Entity Framework migrations geradas
+# (remover da lista se quiser commitar as migrations)
+# AprovaFlow.Infrastructure/Data/Migrations/
+
+## Rider/VS Code
+.idea/
+.vscode/
+*.DotSettings.user
