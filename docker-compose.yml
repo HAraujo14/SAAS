@@ -1,0 +1,48 @@
+version: '3.9'
+
+# Stack de desenvolvimento local para o AprovaFlow.
+# Inicia PostgreSQL, pgAdmin para gestão visual e MailHog para testar emails.
+#
+# Uso:
+#   docker compose up -d
+#   docker compose down -v   (apaga volumes — reset completo)
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: aprovaflow-db
+    environment:
+      POSTGRES_DB: aprovaflow_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: aprovaflow-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@aprovaflow.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: aprovaflow-mailhog
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI — http://localhost:8025
+
+volumes:
+  postgres_data:
